@@ -2,7 +2,9 @@
 
 #include "memory.hh"
 
-Memory::Memory() {
+Memory::Memory(Console* console) {
+	this->console = console;
+
 	pages_total = (uint8_t)(TOTAL_MEMORY / PAGE_SIZE);
 	pages_free = pages_total;
 
@@ -12,13 +14,22 @@ Memory::Memory() {
 	pagemap_pages = 1 + pagemap_bytes / PAGE_SIZE;
 
 	// Fill memory with FF to keep it clean.
-	memset(pagemap, PAGE_FREE, pagemap_bytes);
+	memset(pagemap, 0xff, pagemap_bytes);
 
 	// Initialise all memory pages.
 	uint8_t i;
 	for(i = 0; i < pagemap_pages; i++) {
 		this->allocPage(true);
 	}
+
+	char* message;
+	sprintf(
+		message,
+		"Allocated %d bits of memory...",
+		pagemap_bits
+	);
+
+	this->console->println(message);
 }
 
 void* Memory::allocPage(bool write_zero) {
@@ -41,7 +52,7 @@ void* Memory::allocPage(bool write_zero) {
 				pagemap[page_byte_num] &= ~mask;
 
 				page_number = page_byte_num * 8 + bit_num;
-				page_addr = (page_number * PAGE_SIZE + MAIN_MEMORY_START);
+				page_addr = (void*)(page_number * PAGE_SIZE + MAIN_MEMORY_START);
 
 				if (write_zero) {
 					memset(page_addr, 0, PAGE_SIZE);

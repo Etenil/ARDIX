@@ -1,3 +1,6 @@
+#ifndef CONSOLE_HH
+#define CONSOLE_HH
+
 #include <string.h>
 #include <Arduino.h>
 
@@ -11,4 +14,6 @@ public:
 	size_t print(const char* string);
 	size_t println(const char* string);
 };
+
+#endif
 

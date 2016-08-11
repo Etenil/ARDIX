@@ -1,3 +1,6 @@
+#ifndef PLATFORM_ARDUINO_NANO_H
+#define PLATFORM_ARDUINO_NANO_H
+
 /* Memory topology. */
 
 
@@ -17,4 +20,6 @@
  * the count of pages in one byte. Let's choose 8 instead. That means we
  * can allocate 160 pages in memory. */
 #define PAGE_SIZE 8
+
+#endif
 

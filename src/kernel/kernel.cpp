@@ -4,11 +4,14 @@
 #include <util/delay.h>
 #include <inttypes.h>
 
-#include "console.h"
+#include "console.hh"
+#include "platform/arduino_nano.h"
+#include "memory.hh"
+#include "kernelmem.hh"
 
 int main(void)
 {
-
+	uint8_t run_kernel = 1;
 
 	// Demo write to registers.
 	DDRB |= _BV(5);
@@ -16,8 +19,15 @@ int main(void)
 	Console* console = new Console();
 	console->println("ARDIX starting...");
 
+	Memory* mem = new Memory(console);
+	KernelMem* kmem = new KernelMem(
+		(uint8_t)KERNEL_START,
+		(uint8_t)KERNEL_END - KERNEL_START
+	);
+
+
 	bool state = false;
-	while(1) {
+	while(run_kernel) {
 		if (!state) {
 			console->println("LED on...");
 			PORTB |= _BV(5);

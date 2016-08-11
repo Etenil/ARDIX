@@ -1,11 +1,11 @@
+#ifndef MEMORY_HH
+#define MEMORY_HH
+
 #include <inttypes.h>
 
-#include "platform/arduino_nano.h"
+#include "console.hh"
 
-/* The first byte of a page is used to determine its state. The following
- * magic numbers are used for that. */
-#define PAGE_FREE 0xFF
-#define PAGE_USED 0xFE
+#include "platform/arduino_nano.h"
 
 #define KILO 1024
 #define MEGA (KILO*KILO)
@@ -24,9 +24,13 @@ private:
 
 	void* main_memory_start = (void*)MAIN_MEMORY_START;
 
+	Console* console;
+
 public:
-	Memory();
+	Memory(Console* console);
 	void* allocPage(bool write_zero);
 	void freePage(void *addr);
 };
+
+#endif
 

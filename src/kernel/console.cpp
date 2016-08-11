@@ -1,4 +1,4 @@
-#include "console.h"
+#include "console.hh"
 
 Console::Console() {
 	Serial.begin(115200);
